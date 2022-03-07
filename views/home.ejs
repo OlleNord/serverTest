@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <p>home</p>
+    <button>Clear All</button>
+    <div id="clients">
+
+    </div>
+    
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script>
+        const socket = io("http://localhost:3000");
+        socket.on("id", socket_ids => {
+            let clients = document.getElementById("clients");
+            while (clients.firstChild) {
+                clients.removeChild(clients.firstChild);
+            }
+            ids = JSON.parse(socket_ids);
+            
+            console.log(ids)
+            for (let i = 0; i < ids.length; i++) {
+                console.log(ids[i])
+                id = document.createElement("div");
+                id.innerHTML = ids[i];
+                id.style = "margin: 20px; border: 1px solid red; color: green;";
+                clients.appendChild(id);
+            }
+            
+        });
+        document.querySelector("button").addEventListener("click", function(event) {
+            socket.emit("clear-all", socket.id.toString());
+        });
+    </script>
+</body>
+</html>
